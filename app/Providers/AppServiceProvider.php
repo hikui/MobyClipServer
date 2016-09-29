@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $storePath = env('IMAGE_STORE_PATH');
+        if($storePath == null) {
+            error_log("[ERROR] Image store path does not exist!");
+            exit(1);
+        }
+        if (!file_exists($storePath)) {
+            mkdir($storePath, 0766, true);
+        }
     }
 
     /**
