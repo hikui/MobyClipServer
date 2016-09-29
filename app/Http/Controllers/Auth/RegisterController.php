@@ -66,6 +66,12 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'hash' => sha1($data['name'].$this->generateRandomString(5)),
         ]);
+    }
+
+    private function generateRandomString($length = 10) 
+    {
+        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
     }
 }

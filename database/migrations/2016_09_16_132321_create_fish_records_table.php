@@ -16,6 +16,11 @@ class CreateFishRecordsTable extends Migration
         Schema::create('fish_records', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->float('length', 5, 2);
+            $table->float('weight', 8, 2);
+            $table->unsignedInteger('fish_type_id')->nullable();
+            $table->foreign('fish_type_id')->references('id')->on('fish_types');
+            $table->boolean('active')->default(true);
         });
     }
 
