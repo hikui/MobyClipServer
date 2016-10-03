@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\FishRecord as FishRecord;
+use App\User as User;
+use App\FishType as FishType;
 
 class FishRecordController extends Controller {
     
@@ -20,10 +23,19 @@ class FishRecordController extends Controller {
             $extension = $file->getClientOriginalExtension();
             $randFileName = uniqid().'.'.$extension;
             $file->move($storePath, $randFileName);
-            // 2. create a FishRecord object
-            // 3. Recognize fish
-            // 4. return result
-            return ['msg'=>"success"];
+            // 2. find user
+            $user = User::where('hash',$request->input('user_hash'))->first(); 
+            // 3. Create a new record
+            $record = new FishRecord();
+            $record->user()->associate($user);
+            $record->weight = 0;
+            $record->length = 0;
+
+            // 4. Fish recognition
+            $fishType = FishType::firstOrCreate(['name' => 'Snapper']);
+            $record->fishType()->associate($fishType);
+            $record->save();
+            return $record; 
         } else {
             throw new Exception("Failed to upload file.");
         }

@@ -10,4 +10,8 @@ class FishType extends Model
     {
         return $this->hasMany('App\FishType');
     }
+
+    protected $fillable = [
+        'name',
+    ];
 }

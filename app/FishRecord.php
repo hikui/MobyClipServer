@@ -15,4 +15,8 @@ class FishRecord extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    protected $hidden = [
+        'user_id',
+    ];
 }
