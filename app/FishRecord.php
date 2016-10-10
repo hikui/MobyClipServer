@@ -19,4 +19,11 @@ class FishRecord extends Model
     protected $hidden = [
         'user_id',
     ];
+
+    protected $casts = [
+        'latitude' => 'float',
+        'longitude' => 'float',
+        'weight' => 'float',
+        'length' => 'float'
+    ];
 }
