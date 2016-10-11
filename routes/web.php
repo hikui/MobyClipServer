@@ -11,8 +11,11 @@
 |
 */
 
+use App\FishRecord as FishRecord;
+
 Route::get('/', function () {
-    return view('welcome');
+    $fishRecords = FishRecord::whereNotNull("latitude")->whereNotNull("longitude")->take(10)->with("fishType")->get();
+    return view('welcome')->with("fishRecords", $fishRecords);
 });
 
 Auth::routes();

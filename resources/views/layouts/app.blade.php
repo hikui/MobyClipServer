@@ -12,7 +12,15 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    
+    <style>
+    html, body {
+        height:100%;
+        min-height:100%;
+    }
+    </style>
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -43,6 +51,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     &nbsp;
+
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -79,7 +88,6 @@
 
     @yield('content')
 
-    <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    
 </body>
 </html>
