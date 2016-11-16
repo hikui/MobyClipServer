@@ -29,13 +29,38 @@ div.fill {
 <script>
     
     var map;
-    var markers = [];
+    var fishRecords = {!! $fishRecords !!}
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: -34.397, lng: 150.644},
             zoom: 6
         });
+
+        var infowindow = new google.maps.InfoWindow();
+        var markers = [];
+        var addMarkerWithTimeout = function(record, timeout) {
+            window.setTimeout(function() {
+                var position = {lat: record.latitude, lng: record.longitude};
+                var marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+                markers.push(marker);
+                marker.addListener('click', function() {
+                    infowindow.setContent(record.fish_type.name);
+                    infowindow.open(map, marker);
+                });
+            }, timeout);
+        }
+
+        var clearMarkers = function() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -47,29 +72,11 @@ div.fill {
                 map.setCenter(pos);
             });
         }
-
-        var fishRecords = {!! $fishRecords !!}
         _.forEach(fishRecords, function(record){
-            addMarkerWithTimeout({lat: record.latitude, lng: record.longitude});
+            addMarkerWithTimeout(record);
         });
     }
 
-    function addMarkerWithTimeout(position, timeout) {
-        window.setTimeout(function() {
-            markers.push(new google.maps.Marker({
-            position: position,
-            map: map,
-            animation: google.maps.Animation.DROP
-            }));
-        }, timeout);
-        }
-
-    function clearMarkers() {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-        markers = [];
-    }
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCVOG_shY27S_mrnPzsdNlD-uM6WIBLTA&callback=initMap"></script>
